@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import logo from "@/assets/logo.asset.json";
 import heroImg from "@/assets/hero-bible.jpg";
 
 export const Route = createFileRoute("/nosotros")({
@@ -21,7 +20,7 @@ function Nosotros() {
 
       <section className="bg-gradient-hero">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <img src={logo.url} alt="" className="h-20 w-20 mx-auto rounded-full mb-6" />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="h-20 w-20 mx-auto rounded-full mb-6" />
           <div className="text-xs uppercase tracking-[0.2em] text-gold mb-3">Nuestra historia</div>
           <h1 className="font-display text-5xl md:text-6xl text-primary leading-tight">
             22 años guiando los pasos<br />hacia la verdad de Cristo.

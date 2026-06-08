@@ -1,6 +1,30 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Mail, MapPin } from "lucide-react";
-import logo from "@/assets/logo.asset.json";
+import { useEffect, useState } from "react";
+
+function VisitCounter() {
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Incrementa una sola vez por sesión del navegador; en navegaciones
+    // o remontajes posteriores solo lee el total (endpoint sin /up).
+    const counted = sessionStorage.getItem("ls_visita_contada");
+    const base = "https://api.counterapi.dev/v1/la-senda-web-site/visitas";
+    // Barra final = solo lectura (no incrementa); /up = incrementa.
+    const url = counted ? `${base}/` : `${base}/up`;
+
+    fetch(url)
+      .then((r) => r.json())
+      .then((d) => {
+        sessionStorage.setItem("ls_visita_contada", "1");
+        setCount(d.count);
+      })
+      .catch(() => setCount(null));
+  }, []);
+
+  if (count === null) return null;
+  return <span> · {count.toLocaleString("es")} visitas</span>;
+}
 
 export function Footer() {
   return (
@@ -8,7 +32,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3">
-            <img src={logo.url} alt="La Senda" className="h-12 w-12 rounded-full" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="La Senda" className="h-12 w-12 rounded-full" />
             <div>
               <div className="font-display text-xl text-primary">La Senda</div>
               <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -46,6 +70,7 @@ export function Footer() {
       </div>
       <div className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} Librería La Senda. Todos los derechos reservados.
+        <VisitCounter />
       </div>
     </footer>
   );

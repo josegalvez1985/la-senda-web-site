@@ -1,7 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
-import logo from "@/assets/logo.asset.json";
 import { useCart } from "@/lib/cart";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +20,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 backdrop-blur-md bg-background/80 border-b border-border/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <img src={logo.url} alt="La Senda" className="h-10 w-10 rounded-full object-cover ring-1 ring-border" />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="La Senda" className="h-10 w-10 rounded-full object-cover ring-1 ring-border" />
           <div className="leading-tight">
             <div className="font-display text-lg text-primary">La Senda</div>
             <div className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Librería Cristiana</div>

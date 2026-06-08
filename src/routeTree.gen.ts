@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as CatalogoRouteImport } from './routes/catalogo'
@@ -17,11 +16,6 @@ import { Route as CarritoRouteImport } from './routes/carrito'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LibroIdRouteImport } from './routes/libro.$id'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NosotrosRoute = NosotrosRouteImport.update({
   id: '/nosotros',
   path: '/nosotros',
@@ -59,7 +53,6 @@ export interface FileRoutesByFullPath {
   '/catalogo': typeof CatalogoRoute
   '/contacto': typeof ContactoRoute
   '/nosotros': typeof NosotrosRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/libro/$id': typeof LibroIdRoute
 }
 export interface FileRoutesByTo {
@@ -68,7 +61,6 @@ export interface FileRoutesByTo {
   '/catalogo': typeof CatalogoRoute
   '/contacto': typeof ContactoRoute
   '/nosotros': typeof NosotrosRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/libro/$id': typeof LibroIdRoute
 }
 export interface FileRoutesById {
@@ -78,7 +70,6 @@ export interface FileRoutesById {
   '/catalogo': typeof CatalogoRoute
   '/contacto': typeof ContactoRoute
   '/nosotros': typeof NosotrosRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/libro/$id': typeof LibroIdRoute
 }
 export interface FileRouteTypes {
@@ -89,17 +80,9 @@ export interface FileRouteTypes {
     | '/catalogo'
     | '/contacto'
     | '/nosotros'
-    | '/sitemap.xml'
     | '/libro/$id'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/carrito'
-    | '/catalogo'
-    | '/contacto'
-    | '/nosotros'
-    | '/sitemap.xml'
-    | '/libro/$id'
+  to: '/' | '/carrito' | '/catalogo' | '/contacto' | '/nosotros' | '/libro/$id'
   id:
     | '__root__'
     | '/'
@@ -107,7 +90,6 @@ export interface FileRouteTypes {
     | '/catalogo'
     | '/contacto'
     | '/nosotros'
-    | '/sitemap.xml'
     | '/libro/$id'
   fileRoutesById: FileRoutesById
 }
@@ -117,19 +99,11 @@ export interface RootRouteChildren {
   CatalogoRoute: typeof CatalogoRoute
   ContactoRoute: typeof ContactoRoute
   NosotrosRoute: typeof NosotrosRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   LibroIdRoute: typeof LibroIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/nosotros': {
       id: '/nosotros'
       path: '/nosotros'
@@ -181,9 +155,18 @@ const rootRouteChildren: RootRouteChildren = {
   CatalogoRoute: CatalogoRoute,
   ContactoRoute: ContactoRoute,
   NosotrosRoute: NosotrosRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
   LibroIdRoute: LibroIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

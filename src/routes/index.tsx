@@ -5,7 +5,6 @@ import { Footer } from "@/components/Footer";
 import { BookCard } from "@/components/BookCard";
 import { books, categories } from "@/lib/books";
 import heroImg from "@/assets/hero-bible.jpg";
-import logo from "@/assets/logo.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,7 +67,7 @@ function Home() {
               <img src={heroImg} alt="Biblia abierta con hojas de eucalipto" className="w-full h-[460px] lg:h-[560px] object-cover" />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-background rounded-2xl shadow-soft border border-border/60 p-4 flex items-center gap-3 max-w-[260px]">
-              <img src={logo.url} alt="" className="h-12 w-12 rounded-full" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="h-12 w-12 rounded-full" />
               <div>
                 <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Recomendado</div>
                 <div className="text-sm font-medium">Devociones Diarias</div>
