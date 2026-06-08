@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/books";
+import { whatsappUrl } from "@/lib/contact";
 
 export const Route = createFileRoute("/carrito")({
   head: () => ({
@@ -17,6 +18,20 @@ export const Route = createFileRoute("/carrito")({
 
 function Cart() {
   const { items, setQty, remove, total, clear } = useCart();
+
+  function checkout() {
+    const lines = items.map(
+      ({ book, qty }) => `• ${qty}x ${book.title} — ${formatPrice(book.price * qty)}`,
+    );
+    const message = [
+      "¡Hola! Quiero hacer este pedido en Librería La Senda:",
+      "",
+      ...lines,
+      "",
+      `Total: ${formatPrice(total)}`,
+    ].join("\n");
+    window.open(whatsappUrl(message), "_blank", "noopener");
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -79,10 +94,10 @@ function Cart() {
                 <span>Total</span>
                 <span className="font-display">{formatPrice(total)}</span>
               </div>
-              <button className="mt-6 w-full rounded-full bg-gold text-gold-foreground py-3 text-sm font-medium hover:opacity-90 transition">
-                Finalizar compra
+              <button onClick={checkout} className="mt-6 w-full rounded-full bg-gold text-gold-foreground py-3 text-sm font-medium hover:opacity-90 transition">
+                Finalizar compra por WhatsApp
               </button>
-              <p className="mt-3 text-xs text-primary-foreground/60 text-center">Pago seguro · Envíos a todo el país</p>
+              <p className="mt-3 text-xs text-primary-foreground/60 text-center">Coordinamos pago y envío por WhatsApp</p>
             </aside>
           </div>
         )}

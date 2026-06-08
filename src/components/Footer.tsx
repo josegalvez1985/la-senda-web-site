@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Mail, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
+import { CONTACT_ADDRESS, CONTACT_EMAIL } from "@/lib/contact";
 
 function VisitCounter() {
   const [count, setCount] = useState<number | null>(null);
@@ -59,8 +60,8 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-semibold mb-4">Visítanos</h4>
           <ul className="space-y-3 text-sm text-muted-foreground">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 mt-0.5 text-primary" /> Luque, Paraguay</li>
-            <li className="flex gap-2"><Mail className="h-4 w-4 mt-0.5 text-primary" /> contacto@lasenda.com</li>
+            <li className="flex gap-2"><MapPin className="h-4 w-4 mt-0.5 text-primary" /> {CONTACT_ADDRESS}</li>
+            <li className="flex gap-2"><Mail className="h-4 w-4 mt-0.5 text-primary" /> <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-foreground">{CONTACT_EMAIL}</a></li>
             <li className="flex gap-3 pt-2">
               <a href="#" className="h-9 w-9 rounded-full bg-background flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition" aria-label="Instagram"><Instagram className="h-4 w-4" /></a>
               <a href="#" className="h-9 w-9 rounded-full bg-background flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition" aria-label="Facebook"><Facebook className="h-4 w-4" /></a>

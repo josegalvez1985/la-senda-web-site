@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Clock, MapPin, Mail, Phone, Car } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { CONTACT_ADDRESS, CONTACT_EMAIL, CONTACT_PHONE, whatsappUrl } from "@/lib/contact";
 
 export const Route = createFileRoute("/contacto")({
   head: () => ({
@@ -30,16 +31,23 @@ function Contacto() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-[1fr_1.2fr] gap-12">
         <div className="space-y-6">
           <Info icon={<Clock />} title="Horario de atención" body={["Lunes a Sábado", "08:00 a 18:00"]} />
-          <Info icon={<MapPin />} title="Dirección" body={["Luque, Paraguay"]} />
+          <Info icon={<MapPin />} title="Dirección" body={[CONTACT_ADDRESS]} />
           <Info icon={<Car />} title="Estacionamiento" body={["Gratuito para clientes"]} />
-          <Info icon={<Phone />} title="Teléfono" body={["+595 000 000 000"]} />
-          <Info icon={<Mail />} title="Email" body={["contacto@lasenda.com"]} />
+          <Info icon={<Phone />} title="Teléfono" body={[CONTACT_PHONE]} />
+          <Info icon={<Mail />} title="Email" body={[CONTACT_EMAIL]} />
         </div>
 
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            alert("Gracias por escribirnos. Te responderemos pronto.");
+            const f = new FormData(e.currentTarget);
+            const message = [
+              `Hola, soy ${f.get("name")} (${f.get("email")}).`,
+              `Asunto: ${f.get("subject")}`,
+              "",
+              String(f.get("message") ?? ""),
+            ].join("\n");
+            window.open(whatsappUrl(message), "_blank", "noopener");
           }}
           className="rounded-3xl bg-card border border-border/60 p-8 md:p-10 space-y-5"
         >
@@ -51,10 +59,10 @@ function Contacto() {
           <Field label="Asunto" name="subject" />
           <div>
             <label className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">Mensaje</label>
-            <textarea required rows={5} className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            <textarea required name="message" rows={5} className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
           </div>
           <button className="rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-medium hover:bg-primary/90 transition">
-            Enviar mensaje
+            Enviar por WhatsApp
           </button>
         </form>
       </section>

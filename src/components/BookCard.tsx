@@ -1,8 +1,19 @@
 import { Link } from "@tanstack/react-router";
+import { ShoppingBag } from "lucide-react";
+import { toast } from "sonner";
 import type { Book } from "@/lib/books";
 import { formatPrice } from "@/lib/books";
+import { useCart } from "@/lib/cart";
 
 export function BookCard({ book }: { book: Book }) {
+  const cart = useCart();
+
+  function addToCart(e: React.MouseEvent) {
+    e.preventDefault();
+    cart.add(book);
+    toast.success("Agregado al carrito", { description: book.title });
+  }
+
   return (
     <Link
       to="/libro/$id"
@@ -21,6 +32,13 @@ export function BookCard({ book }: { book: Book }) {
             Nuevo
           </span>
         )}
+        <button
+          onClick={addToCart}
+          aria-label={`Agregar ${book.title} al carrito`}
+          className="absolute bottom-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition shadow-soft hover:bg-primary/90 focus:opacity-100 focus:translate-y-0"
+        >
+          <ShoppingBag className="h-4 w-4" />
+        </button>
       </div>
       <div className="mt-4 space-y-1">
         <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{book.category}</div>
